@@ -1,0 +1,100 @@
+# Hermes Agent Configuration
+# AI Intelligence Agent — Based on Julian Goldie Podcast Analysis
+
+agent:
+  name: "Hermes AI Intelligence"
+  version: "1.0.0"
+  owner: "Fabio (GRENOUCERIE S.L.)"
+  timezone: "Europe/Madrid"
+  language: "es"
+  outreach_language: "fr"
+
+monitoring:
+  youtube:
+    api_key_file: "/tmp/yt_api_key.txt"
+    channels:
+      - handle: "JulianGoldiePodcast"
+        channel_id: "UCgl54MMemaGR47QeWs-lRcQ"
+        playlist_id: "UUgl54MMemaGR47QeWs-lRcQ"
+        frequency: "daily"
+        priority: "high"
+      - handle: "luismvillanuevag"
+        frequency: "twice_weekly"
+        priority: "medium"
+    rate_limit: 10000  # units per day
+    method: "python_urllib"  # NOT curl (tirith blocked)
+    
+  check_schedule:
+    hour: 8
+    minute: 0
+    days: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+
+outreach:
+  email:
+    account: "grenoucerie@gmail.com"
+    smtp_host: "smtp.gmail.com"
+    smtp_port: 587
+    method: "smtplib"
+    max_per_day: 50
+    require_approval: true
+    
+  crm:
+    supabase_project: "pnxtynapbusddgrzfhmw"
+    supabase_url: "https://pnxtynapbusddgrzfhmw.supabase.co"
+    tables:
+      leads: "crm_Leads"
+      activities: "activities"
+    max_touches: 3
+    touch_interval_hours: 72
+    
+  telegram:
+    chat_id: "6959371755"
+    platform: "telegram"
+
+intelligence:
+  categories:
+    critical:
+      - "agent_os"
+      - "new_model_release"
+      - "major_breakthrough"
+    high:
+      - "ai_tool_launch"
+      - "chinese_ai"
+      - "funding_news"
+      - "anthropic_ipo"
+    medium:
+      - "marketing_ai"
+      - "seo_ai"
+      - "industry_trends"
+      
+  action_thresholds:
+    critical: "immediate_notify"
+    high: "log_and_queue"
+    medium: "log_only"
+
+reporting:
+  daily_briefing:
+    time: "09:30"
+    format: "telegram"
+    max_length: 500
+    include: ["insights", "actions", "warnings"]
+    
+  weekly_summary:
+    day: "sunday"
+    time: "18:00"
+    format: "email"
+    recipients:
+      - "faustino@ancasderana.com"
+      - "fsimon@ancasderana.com"
+
+paths:
+  daily_log: "/tmp/agent_daily_log_{date}.md"
+  weekly_summary: "/tmp/agent_weekly_summary_{week}.md"
+  knowledge_base: "/root/.hermes/agent_os_julian_goldie/knowledge/"
+  queue: "/tmp/outreach_queue.json"
+
+security:
+  gdpr_compliant: true
+  data_region: "eu-west-3"
+  log_retention_days: 30
+  require_approval_before_send: true
